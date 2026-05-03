@@ -17,7 +17,7 @@ app.set('views','./views');
 app.set('layout','./layouts/layout');
 app.use(expressEjsLayouts);
 
-app.get('/home',async(req,res)=>{
+app.get('/',async(req,res)=>{
     const articles = await db.collection('articles').find().toArray();
     res.render('./home/home', {
         title: 'Temukan Artikel Menarik',
