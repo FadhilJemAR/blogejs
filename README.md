@@ -5,7 +5,7 @@
 Project ini membutuhkan:
 
 - Node.js
-- MongoDB
+- MongoDB dengan tool Mongosh atau Compass atau Atlas untuk penyimpanan data dummy
 
 ## Setup
 
@@ -22,6 +22,7 @@ npm install
 ```env
 PORT=3000
 MONGODB_URI="mongodb://localhost:27017"
+DB_NAME="blogejs"
 ```
 
 > Ubah `PORT` dan `MONGODB_URI` jika diperlukan sesuai lingkungan pengembangan kamu.
