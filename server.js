@@ -88,7 +88,7 @@ app.use((req,res)=>{ //NOT FOUND
     });
 })
 
-app.listen(3000,(err)=>{
+app.listen(process.env.PORT,(err)=>{
     if(err){
          console.error(err);
     }else{
