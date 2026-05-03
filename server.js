@@ -20,14 +20,14 @@ app.use(expressEjsLayouts);
 
 app.get('/',async(req,res)=>{
     const articles = await db.collection('articles').find().toArray();
-    res.render('./home/home', {
+    return res.render('./home/home', {
         title: 'Temukan Artikel Menarik',
         articles
     });
 });
 
 app.get('/compose',(req,res)=>{
-    res.render('./compose/compose', {
+   return  res.render('./compose/compose', {
         title: 'Buat artikel menarik'
     });
 });
@@ -45,7 +45,7 @@ app.get('/article/:id', async (req, res) => {
             });
         }
 
-        res.render('./article/article', {
+       return res.render('./article/article', {
             title: article.title,
             article
         });
@@ -75,14 +75,18 @@ app.post('/api/articles', async (req, res) => {
             date: new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' })
         });
 
-        res.status(201).json({ message: 'Artikel berhasil dibuat.', articleId: result.insertedId });
+        return res.status(201).json({ message: 'Artikel berhasil dibuat.', articleId: result.insertedId });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Gagal menyimpan artikel.' });
+        return res.status(500).json({ message: 'Gagal menyimpan artikel.' });
     }
 });
 
-
+app.use((req,res)=>{ //NOT FOUND
+    return res.status(404).render('./notfound/notfound', {
+        title: 'Halaman tidak ditemukan'
+    });
+})
 
 app.listen(3000,(err)=>{
     if(err){
