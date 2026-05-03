@@ -2,6 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import expressEjsLayouts from 'express-ejs-layouts';
 import { join } from 'path';
+import { ObjectId } from 'mongodb';
 import { connectDB } from './lib/mongodb.js';
 
 
@@ -29,6 +30,32 @@ app.get('/compose',(req,res)=>{
     res.render('./compose/compose', {
         title: 'Buat artikel menarik'
     });
+});
+
+app.get('/article/:id', async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const article = await db.collection('articles').findOne({ _id: new ObjectId(id) });
+
+        if (!article) {
+            return res.status(404).render('./article/article', {
+                title: 'Artikel tidak ditemukan',
+                article: null
+            });
+        }
+
+        res.render('./article/article', {
+            title: article.title,
+            article
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(400).render('./article/article', {
+            title: 'ID artikel tidak valid',
+            article: null
+        });
+    }
 });
 
 app.post('/api/articles', async (req, res) => {
