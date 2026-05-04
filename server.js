@@ -4,7 +4,7 @@ import expressEjsLayouts from 'express-ejs-layouts';
 import { join } from 'path';
 import { ObjectId } from 'mongodb';
 import { connectDB } from './lib/mongodb.js';
-
+import morgan from 'morgan';
 
 dotenv.config({path:join(import.meta.dirname,'.env')});
 const db = await connectDB(process.env.MONGODB_URI);
@@ -12,7 +12,7 @@ const app = express();
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-
+app.use(morgan("dev",{skip:(req,res)=>{return req.statusCode < 400 && req.statusCode > 300 }})); //Morgan dengan format dev dan skip status code 3xx
 app.set('view engine','ejs');
 app.set('views','./views');
 app.set('layout','./layouts/layout');
